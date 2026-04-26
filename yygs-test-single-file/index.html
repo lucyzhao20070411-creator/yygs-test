@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YYGS测试题</title>
+  <style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 224, 178, 0.9), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(184, 208, 255, 0.9), transparent 34%),
+    linear-gradient(135deg, #fff8ef, #f5f2ff);
+  color: #26222a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.app {
+  width: 100%;
+  max-width: 760px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: 0 24px 70px rgba(56, 38, 83, 0.16);
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #f0e7ff;
+  color: #6d46a8;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: clamp(34px, 8vw, 60px);
+  letter-spacing: -1px;
+}
+
+h2 {
+  font-size: clamp(23px, 5vw, 34px);
+  line-height: 1.45;
+  font-weight: 800;
+  margin: 34px 0 28px;
+}
+
+h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #62586c;
+  margin: 0 0 24px;
+}
+
+.intro-box {
+  background: #fff8ea;
+  border: 1px solid #ffe3ac;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 24px 0;
+  color: #655034;
+  line-height: 1.7;
+}
+
+.intro-box p {
+  margin: 4px 0;
+}
+
+button {
+  font: inherit;
+  border: 0;
+  cursor: pointer;
+}
+
+.primary-btn,
+.secondary-btn,
+.option-btn {
+  border-radius: 999px;
+  padding: 15px 22px;
+  font-weight: 800;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.primary-btn {
+  width: 100%;
+  background: #26222a;
+  color: white;
+  box-shadow: 0 12px 24px rgba(38, 34, 42, 0.18);
+}
+
+.secondary-btn {
+  background: #f1edf7;
+  color: #4a4054;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.option-btn:hover {
+  transform: translateY(-2px);
+}
+
+.top-row,
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.top-row {
+  color: #7a6f86;
+  font-weight: 800;
+}
+
+.progress-bar {
+  height: 12px;
+  background: #eee7f5;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+
+#progressFill {
+  height: 100%;
+  width: 5%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffb76b, #a77bff);
+  transition: width 0.25s ease;
+}
+
+.options {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.option-btn {
+  width: 100%;
+  background: #faf7ff;
+  color: #322a3b;
+  border: 2px solid transparent;
+  text-align: left;
+  padding: 18px 20px;
+}
+
+.option-btn.selected {
+  background: #efe5ff;
+  border-color: #9c72df;
+  box-shadow: 0 10px 20px rgba(112, 78, 156, 0.13);
+}
+
+.nav-row .primary-btn,
+.nav-row .secondary-btn {
+  width: 50%;
+}
+
+.animal-line {
+  font-size: 22px;
+  font-weight: 900;
+  margin: 6px 0 18px;
+}
+
+.result-section {
+  background: #faf8ff;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 18px 0;
+  line-height: 1.85;
+}
+
+.result-section p {
+  margin: 0;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.mini-card {
+  background: #fffaf2;
+  border-radius: 20px;
+  padding: 20px;
+  line-height: 1.75;
+}
+
+.mini-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.keyword {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #efe5ff;
+  color: #5c3b8a;
+  font-weight: 800;
+}
+
+.share-box {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 22px;
+  background: #26222a;
+  color: white;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+@media (max-width: 620px) {
+  body {
+    padding: 14px;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-row {
+    flex-direction: column;
+  }
+
+  .nav-row .primary-btn,
+  .nav-row .secondary-btn {
+    width: 100%;
+  }
+}
+
+</style>
+</head>
+<body>
+  <main class="app">
+    <!-- 首页 -->
+    <section id="home" class="card page active">
+      <div class="badge">YYGS Personality Test</div>
+      <h1>YYGS测试题</h1>
+      <p class="subtitle">测测你的隐藏人格气质：你是狮子、黏人狗狗、蛇，还是章鱼？</p>
+
+      <div class="intro-box">
+        <p>你会进入 20 个生活小情景。</p>
+        <p>每道题没有标准答案，也没有好坏之分。</p>
+        <p>请不要想太久，按照你的第一反应选择。</p>
+      </div>
+
+      <button id="startBtn" class="primary-btn">开始测试</button>
+    </section>
+
+    <!-- 测试页 -->
+    <section id="quiz" class="card page">
+      <div class="top-row">
+        <span id="questionCounter">1 / 20</span>
+        <span id="progressPercent">5%</span>
+      </div>
+
+      <div class="progress-bar">
+        <div id="progressFill"></div>
+      </div>
+
+      <h2 id="questionText"></h2>
+
+      <div class="options">
+        <button class="option-btn" data-value="agree">符合</button>
+        <button class="option-btn" data-value="neutral">中立</button>
+        <button class="option-btn" data-value="disagree">不符合</button>
+      </div>
+
+      <div class="nav-row">
+        <button id="prevBtn" class="secondary-btn">上一题</button>
+        <button id="nextBtn" class="primary-btn">下一题</button>
+      </div>
+    </section>
+
+    <!-- 结果页 -->
+    <section id="result" class="card page">
+      <div class="badge">Your YYGS Type</div>
+      <h1 id="resultTitle"></h1>
+      <p id="animalLine" class="animal-line"></p>
+      <p id="oneLine" class="subtitle"></p>
+
+      <div class="result-section">
+        <h3>详细解释</h3>
+        <p id="description"></p>
+      </div>
+
+      <div class="result-grid">
+        <div class="mini-card">
+          <h3>你的优势</h3>
+          <ul id="strengths"></ul>
+        </div>
+        <div class="mini-card">
+          <h3>隐藏问题</h3>
+          <p id="weakness"></p>
+        </div>
+      </div>
+
+      <div class="result-section">
+        <h3>适合你的关系模式</h3>
+        <p id="relationship"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>关键词</h3>
+        <div id="keywords" class="keywords"></div>
+      </div>
+
+      <div class="share-box">
+        <p id="shareLine"></p>
+      </div>
+
+      <button id="restartBtn" class="primary-btn">重新测试</button>
+    </section>
+  </main>
+
+  <script>
+const questions = [
+  {
+    text: "你和朋友一起去旅行，原本安排好的计划突然取消了。大家站在路边，一时不知道接下来该去哪。你会比较容易先提出一个可行方案，让事情继续往前走。",
+    dimension: "sun"
+  },
+  {
+    text: "你被朋友带去一个不太熟的聚会。刚进去时，大家已经聊得比较热络。你通常能慢慢找到机会加入话题，而不是一直等别人主动带你。",
+    dimension: "sun"
+  },
+  {
+    text: "你去一个陌生的商场找店，绕了几圈还是没找到。旁边有服务台，但你也可以继续自己看指示牌。你会比较容易直接去问工作人员。",
+    dimension: "sun"
+  },
+  {
+    text: "小组作业讨论了很久，大家都提出了一些想法，但迟迟没有人整理下一步怎么做。你会比较愿意把大家的想法拉回到一个具体安排上。",
+    dimension: "sun"
+  },
+  {
+    text: "你和朋友准备一起做饭，但食材都堆在桌上，大家一边聊天一边不知道从哪开始。你会比较容易先提一句“要不我们分一下工吧”，让事情开始动起来。",
+    dimension: "sun"
+  },
+  {
+    text: "你和几个人一起玩桌游，大家第一次玩，规则有点复杂。如果你已经大概看懂了，你会比较自然地给大家解释玩法，而不是等别人来主持。",
+    dimension: "sun"
+  },
+  {
+    text: "你发现一家新开的店看起来很有意思，但身边朋友都还没去过。你会比较容易主动约人一起去试试。",
+    dimension: "sun"
+  },
+  {
+    text: "你在课堂、会议或聊天中听到一个你不太认同的观点。如果场合允许，你会比较愿意说出自己的看法，而不是完全憋着。",
+    dimension: "sun"
+  },
+  {
+    text: "你和朋友准备拍一张合照，但大家都在犹豫姿势和角度，气氛有点卡住。你通常比较能先进入状态，带着大家把这件事完成。",
+    dimension: "sun"
+  },
+  {
+    text: "你连续几天觉得生活有点乱，事情堆在一起。你通常会想办法先做一点改变，比如整理桌面、列个清单、确认一个安排，而不是一直放着不动。",
+    dimension: "sun"
+  },
+  {
+    text: "你给一个关系不错的人发消息，对方隔了很久才回，而且语气比平时短很多。即使对方没有说什么重话，你也会忍不住想是不是哪里不太对。",
+    dimension: "wet"
+  },
+  {
+    text: "你和朋友一起吃饭时，发现其中一个人突然变得比刚才安静。哪怕别人没怎么注意，你也会比较快察觉到气氛有变化。",
+    dimension: "wet"
+  },
+  {
+    text: "你整理旧东西时，翻到一张很久以前的票根、照片或聊天记录。你很容易被带回当时的感觉，甚至接下来一小段时间都还在想。",
+    dimension: "wet"
+  },
+  {
+    text: "你走进一家便利店，外面刚下过雨，店里正好放着一首你以前常听的歌。这种场景很容易让你突然想起一些人、一些阶段，或者某种说不清的感觉。",
+    dimension: "wet"
+  },
+  {
+    text: "你和某个人原本聊得很好，但最近对方回复变少了，也没有明显解释。即使你表面上装作没事，心里也很难完全不受影响。",
+    dimension: "wet"
+  },
+  {
+    text: "你看电影、小说或短视频时，经常会被一些很小的细节打动。比如一句台词、一个眼神、一个停顿，你会在看完后还想一会儿。",
+    dimension: "wet"
+  },
+  {
+    text: "你和朋友发生了一点小摩擦，事情本身可能不大。但如果对方没有好好解释，你会在心里反复想这件事到底意味着什么。",
+    dimension: "wet"
+  },
+  {
+    text: "你很容易察觉别人语气里的细微变化。比如敷衍、冷淡、不耐烦、试探，哪怕对方没有直接说出来。",
+    dimension: "wet"
+  },
+  {
+    text: "你一个人坐车、走路或发呆时，窗外的风景、耳机里的音乐、路边的灯光，常常会让你进入某种情绪里。",
+    dimension: "wet"
+  },
+  {
+    text: "你有些感受不会马上说出口，但它们也不会立刻消失。它们可能会在心里停留一段时间，之后又因为某个细节突然冒出来。",
+    dimension: "wet"
+  }
+];
+
+const results = {
+  "阳干": {
+    title: "阳干 · 狮子型",
+    animal: "代表动物：狮子",
+    oneLine: "你像太阳下的狮子，直接、清醒、有力量，不太容易被情绪拖着走。",
+    description: "你是一个行动感很强的人。遇到问题时，你通常不喜欢一直停在原地纠结。比起反复猜测、等待、内耗，你更倾向于先做点什么，让事情往前走。你身上有一种很明显的推进感，别人可能会觉得你比较有主见、直接、利落，也不太容易被带偏。你不是没有情绪，而是你通常不会让情绪占据太久。你更习惯把问题拆开，找到解决办法，然后继续往前走。",
+    strengths: ["行动力强", "判断力清楚", "有主见", "边界感强", "不容易被别人牵着走", "遇事比较能扛"],
+    weakness: "你有时候可能会显得太硬、太快、太直接。别人还在感受情绪的时候，你可能已经开始想解决方案了。",
+    relationship: "你适合和稳定、坦诚、有分寸感的人相处。你不怕直接沟通，怕的是暧昧不清、反复试探、说一半藏一半。",
+    keywords: ["直接", "独立", "清醒", "行动力", "有边界", "不内耗"],
+    share: "我是阳干狮子型：能解决就解决，别让我一直猜。"
+  },
+  "阳湿": {
+    title: "阳湿 · 黏人狗狗型",
+    animal: "代表动物：黏人狗狗",
+    oneLine: "你像一只晒着太阳的黏人狗狗，热情、真诚、会靠近，也很需要回应。",
+    description: "你是一个很有生命力的人。你不只是外向，也不只是热情。更准确地说，你的情绪是会流动出来的。喜欢一个人、在意一段关系、进入一个环境时，你很容易把自己的感受表现出来。你会主动靠近，也希望对方能给你明确的回应。你很适合成为关系里的温度来源，能让气氛变轻松，也能让别人感觉自己被在意。",
+    strengths: ["亲和力强", "表达直接", "情绪鲜活", "很会给人温暖", "容易建立关系", "共情能力强"],
+    weakness: "你可能太容易被别人的回应影响心情。当你很在意一个人时，对方的一句话、一个表情、一次冷淡，都可能被你放大。",
+    relationship: "你适合和稳定回应型的人相处。你不适合长期待在忽冷忽热、吊着你、让你反复猜的关系里。",
+    keywords: ["热情", "柔软", "真诚", "需要回应", "关系感强", "情绪流动"],
+    share: "我是阳湿黏人狗狗型：我不是作，我只是需要你明确一点。"
+  },
+  "阴干": {
+    title: "阴干 · 蛇型",
+    animal: "代表动物：蛇",
+    oneLine: "你像安静盘踞的蛇，冷静、敏锐、有防备，不轻易把真实的自己交出去。",
+    description: "你是一个很会观察的人。你不喜欢一上来就把自己完全暴露在别人面前。进入新环境、认识新的人、面对一段关系时，你通常会先看、先判断、先确认安全感。你不是没有情绪，也不是不会在意，只是你很少让别人轻易看见。你身上有一种冷静的距离感，别人可能会觉得你难接近、神秘、慢热，甚至有点不好猜。",
+    strengths: ["观察力强", "冷静克制", "判断清楚", "自我保护意识强", "不容易被情绪冲昏头", "有神秘感和距离感"],
+    weakness: "你有时候会把自己保护得太严。别人想靠近你时，可能会找不到入口。你可能明明在意，但表现得像无所谓。",
+    relationship: "你适合和有分寸感、尊重空间、不强行逼你表达的人相处。真正适合你的人，不会急着撬开你，而是会让你自己愿意靠近。",
+    keywords: ["冷静", "疏离", "克制", "敏锐", "慢热", "有防备"],
+    share: "我是阴干蛇型：我不是冷漠，我只是不会轻易放人进来。"
+  },
+  "阴湿": {
+    title: "阴湿 · 章鱼型",
+    animal: "代表动物：章鱼",
+    oneLine: "你像深海里的章鱼，敏感、复杂、柔软，能感受到很多别人忽略的东西。",
+    description: "你是一个内心世界很深的人。你不一定在人群里特别显眼，也不一定会把所有情绪表现出来。但你的感受力很强，很多细节都会被你接收到。一个语气、一句没说完的话、一个突然变冷的氛围，都可能在你心里留下很久。你很容易被场景、回忆、音乐、天气、旧物影响。",
+    strengths: ["感受力强", "想象力丰富", "共情能力强", "能理解复杂情绪", "适合创作和表达", "对细节非常敏锐"],
+    weakness: "你容易想太多，也容易被情绪困住。有时候事情本身没有那么严重，但它会在你心里反复发酵。",
+    relationship: "你适合和温柔、稳定、有耐心的人相处。你不适合长期处在让你反复猜、反复不安、反复自我怀疑的关系里。",
+    keywords: ["敏感", "细腻", "复杂", "柔软", "情绪深", "想象力强"],
+    share: "我是阴湿章鱼型：我不是想太多，我是真的感觉到了。"
+  }
+};
+
+let currentQuestion = 0;
+let answers = Array(questions.length).fill(null);
+
+const home = document.getElementById("home");
+const quiz = document.getElementById("quiz");
+const result = document.getElementById("result");
+const startBtn = document.getElementById("startBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const restartBtn = document.getElementById("restartBtn");
+const questionText = document.getElementById("questionText");
+const questionCounter = document.getElementById("questionCounter");
+const progressPercent = document.getElementById("progressPercent");
+const progressFill = document.getElementById("progressFill");
+const optionButtons = document.querySelectorAll(".option-btn");
+
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  page.classList.add("active");
+}
+
+function renderQuestion() {
+  const question = questions[currentQuestion];
+  questionText.textContent = question.text;
+  questionCounter.textContent = `${currentQuestion + 1} / ${questions.length}`;
+
+  const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+  progressPercent.textContent = `${percent}%`;
+  progressFill.style.width = `${percent}%`;
+
+  optionButtons.forEach(btn => {
+    btn.classList.toggle("selected", answers[currentQuestion] === btn.dataset.value);
+  });
+
+  prevBtn.style.visibility = currentQuestion === 0 ? "hidden" : "visible";
+  nextBtn.textContent = currentQuestion === questions.length - 1 ? "查看结果" : "下一题";
+}
+
+function calculateResult() {
+  const scores = {
+    yang: 0,
+    yin: 0,
+    wet: 0,
+    dry: 0
+  };
+
+  questions.forEach((question, index) => {
+    const answer = answers[index];
+
+    if (question.dimension === "sun") {
+      if (answer === "agree") scores.yang += 2;
+      if (answer === "neutral") {
+        scores.yang += 1;
+        scores.yin += 1;
+      }
+      if (answer === "disagree") scores.yin += 2;
+    }
+
+    if (question.dimension === "wet") {
+      if (answer === "agree") scores.wet += 2;
+      if (answer === "neutral") {
+        scores.wet += 1;
+        scores.dry += 1;
+      }
+      if (answer === "disagree") scores.dry += 2;
+    }
+  });
+
+  const first = scores.yang >= scores.yin ? "阳" : "阴";
+  const second = scores.dry > scores.wet ? "干" : "湿";
+  return `${first}${second}`;
+}
+
+function renderResult() {
+  const type = calculateResult();
+  const data = results[type];
+
+  document.getElementById("resultTitle").textContent = data.title;
+  document.getElementById("animalLine").textContent = data.animal;
+  document.getElementById("oneLine").textContent = data.oneLine;
+  document.getElementById("description").textContent = data.description;
+  document.getElementById("weakness").textContent = data.weakness;
+  document.getElementById("relationship").textContent = data.relationship;
+  document.getElementById("shareLine").textContent = data.share;
+
+  const strengths = document.getElementById("strengths");
+  strengths.innerHTML = "";
+  data.strengths.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    strengths.appendChild(li);
+  });
+
+  const keywords = document.getElementById("keywords");
+  keywords.innerHTML = "";
+  data.keywords.forEach(item => {
+    const span = document.createElement("span");
+    span.className = "keyword";
+    span.textContent = item;
+    keywords.appendChild(span);
+  });
+}
+
+startBtn.addEventListener("click", () => {
+  showPage(quiz);
+  renderQuestion();
+});
+
+optionButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    answers[currentQuestion] = btn.dataset.value;
+    renderQuestion();
+  });
+});
+
+prevBtn.addEventListener("click", () => {
+  if (currentQuestion > 0) {
+    currentQuestion -= 1;
+    renderQuestion();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (!answers[currentQuestion]) {
+    alert("请先选择一个选项～");
+    return;
+  }
+
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion += 1;
+    renderQuestion();
+  } else {
+    renderResult();
+    showPage(result);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+});
+
+restartBtn.addEventListener("click", () => {
+  currentQuestion = 0;
+  answers = Array(questions.length).fill(null);
+  showPage(home);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+</script>
+</body>
+</html>
